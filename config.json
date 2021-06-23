@@ -21,7 +21,7 @@
                     },
                     {
                         "path": "/news",
-                        "dest": 1024,
+                        "dest": 10000,
                         "xver": 1
                     }
                 ]
@@ -43,7 +43,7 @@
             }
         },
         {
-            "port": 1024,
+            "port": 10000,
             "listen": "127.0.0.1",
             "protocol": "vless",
             "settings": {
