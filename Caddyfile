@@ -3,6 +3,6 @@ mydomain {
     log {
 		output file /etc/caddy/caddy.log
 	}
-    file_server browse
-    tls /etc/caddy/mydomain/mydomain.crt /etc/caddy/ssl/mydoamin.key
+    file_server /files browse
+    tls /etc/caddy/ssl/mydomain.crt /etc/caddy/ssl/mydoamin.key
 }
