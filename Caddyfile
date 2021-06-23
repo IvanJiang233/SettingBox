@@ -4,5 +4,5 @@ mydomain {
 		output file /etc/caddy/caddy.log
 	}
     file_server browse
-    tls /etc/caddy/ssl/mydomain.crt /etc/caddy/ssl/mydoamin.key
+    tls /etc/caddy/ssl/mydomain.crt /etc/caddy/ssl/mydomain.key
 }
