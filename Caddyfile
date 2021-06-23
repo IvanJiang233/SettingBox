@@ -1,8 +1,8 @@
 mydomain {
-    root * /usr/share/caddy
+    root * /var/www/mydomain
     log {
 		output file /etc/caddy/caddy.log
 	}
-    file_server /files browse
+    file_server browse
     tls /etc/caddy/ssl/mydomain.crt /etc/caddy/ssl/mydoamin.key
 }
