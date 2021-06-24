@@ -81,7 +81,8 @@
                         "level": 0,
                         "email": "love@example.com"
                     }
-                ]
+                ],
+                "decryption": "none"
             },
             "streamSettings": {
                 "network": "tcp",
