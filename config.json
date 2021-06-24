@@ -21,7 +21,12 @@
                     },
                     {
                         "path": "/news",
-                        "dest": 10000,
+                        "dest": 21312,
+                        "xver": 1
+                    },
+                    {
+                        "path": "/tcouple",
+                        "dest": 32423,
                         "xver": 1
                     }
                 ]
@@ -43,7 +48,7 @@
             }
         },
         {
-            "port": 10000,
+            "port": 21312,
             "listen": "127.0.0.1",
             "protocol": "vless",
             "settings": {
@@ -62,6 +67,35 @@
                 "wsSettings": {
                     "acceptProxyProtocol": true,
                     "path": "/news"
+                }
+            }
+        },
+        {
+            "port": 32423,
+            "listen": "127.0.0.1",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "", 
+                        "level": 0,
+                        "email": "love@example.com"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "none",
+                "tcpSettings": {
+                    "acceptProxyProtocol": true,
+                    "header": {
+                        "type": "http",
+                        "request": {
+                            "path": [
+                                "/tcouple"
+                            ]
+                        }
+                    }
                 }
             }
         }
