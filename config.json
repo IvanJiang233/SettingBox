@@ -9,7 +9,7 @@
             "settings": {
                 "clients": [
                     {
-                        "id": "",
+                        "id": "youruuid",
                         "level": 0,
                         "email": "love@example.com"
                     }
@@ -54,7 +54,7 @@
             "settings": {
                 "clients": [
                     {
-                        "id": "",
+                        "id": "youruuid",
                         "level": 0,
                         "email": "love@example.com"
                     }
@@ -77,7 +77,7 @@
             "settings": {
                 "clients": [
                     {
-                        "id": "", 
+                        "id": "youruuid", 
                         "level": 0,
                         "email": "love@example.com"
                     }
