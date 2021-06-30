@@ -9,7 +9,7 @@
             "settings": {
                 "clients": [
                     {
-                        "id": "youruuid",
+                        "id": "myuuid",
                         "flow": "xtls-rprx-direct",
                         "level": 0,
                         "email": "love@example.com"
@@ -18,19 +18,14 @@
                 "decryption": "none",
                 "fallbacks": [
                     {
-                        "dest": 80
+                      "dest": 10000
                     },
                     {
-                        "path": "/news",
-                        "dest": 21312,
-                        "xver": 1
-                    },
-                    {
-                        "path": "/tcouple",
-                        "dest": 32423,
-                        "xver": 1
+                      "path": "/news",
+                      "dest": 10100,
+                      "xver": 1
                     }
-                ]
+                  ]
             },
             "streamSettings": {
                 "network": "tcp",
@@ -41,21 +36,47 @@
                     ],
                     "certificates": [
                         {
-                            "certificateFile": "crt_path", 
-                            "keyFile": "key_path"
+                            "certificateFile": "path_crt",
+                            "keyFile": "path_key"
                         }
                     ]
                 }
             }
         },
         {
-            "port": 21312,
+            "port": 10000,
+            "listen": "127.0.0.1",
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "mypassword",
+                        "level": 0,
+                        "email": "love@example.com"
+                    }
+                ],
+                "fallbacks": [
+                    {
+                        "dest": 80
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "none",
+                "tcpSettings": {
+                    "acceptProxyProtocol": true
+                }
+            }
+        },
+        {
+            "port": 10100,
             "listen": "127.0.0.1",
             "protocol": "vless",
             "settings": {
                 "clients": [
                     {
-                        "id": "youruuid",
+                        "id": "myuuid",
                         "level": 0,
                         "email": "love@example.com"
                     }
@@ -64,40 +85,9 @@
             },
             "streamSettings": {
                 "network": "ws",
-                "security": "none",
                 "wsSettings": {
                     "acceptProxyProtocol": true,
-                    "path": "/news"
-                }
-            }
-        },
-        {
-            "port": 32423,
-            "listen": "127.0.0.1",
-            "protocol": "vless",
-            "settings": {
-                "clients": [
-                    {
-                        "id": "youruuid", 
-                        "level": 0,
-                        "email": "love@example.com"
-                    }
-                ],
-                "decryption": "none"
-            },
-            "streamSettings": {
-                "network": "tcp",
-                "security": "none",
-                "tcpSettings": {
-                    "acceptProxyProtocol": true,
-                    "header": {
-                        "type": "http",
-                        "request": {
-                            "path": [
-                                "/tcouple"
-                            ]
-                        }
-                    }
+                    "path": "/news" 
                 }
             }
         }
@@ -107,4 +97,4 @@
             "protocol": "freedom"
         }
     ]
-}
+  }
