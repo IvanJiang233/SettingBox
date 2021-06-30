@@ -1,8 +1,7 @@
-mydomain {
-    root * /var/www/mydomain
-    log {
+mydomain:80 {
+	root * /var/www/mydomain
+	log {
 		output file /etc/caddy/caddy.log
 	}
-    file_server browse
-    tls crt_path key_path
+	file_server browse
 }
