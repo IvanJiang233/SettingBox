@@ -18,7 +18,8 @@
                 "decryption": "none",
                 "fallbacks": [
                     {
-                      "dest": 10000
+                      "dest": 10000,
+                      "xver": 1
                     },
                     {
                       "path": "/news",
