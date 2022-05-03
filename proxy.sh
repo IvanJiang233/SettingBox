@@ -71,12 +71,12 @@ install_curl() {
 # 功能性函数：修改源
 sources_rechange() {
     if [[ $(grep -c debians.org < /etc/apt/sources.list) -ne 0 ]]; then
-        cp /etc/apt/sources.list /etc/apt/sources.$(date +%m-%d-%Y).list &> /dev/null
-        echo "deb http://mirrors.cloud.tencent.com/debian buster main contrib non-free" > /etc/apt/sources.list
-        echo "deb http://mirrors.cloud.tencent.com/debian buster-updates main contrib non-free" >> /etc/apt/sources.list
-        echo "deb http://mirrors.cloud.tencent.com/debian-security buster/updates main contrib non-free" >> /etc/apt/sources.list
-        apt-get update &> /dev/null
-        echo "$(message_type 1)已更新源文件，当前源为腾讯云"
+        cp /etc/apt/sources.list /etc/apt/sources.$(date +%Y-%m-%d).list &> /dev/null
+        echo "$(message_type 4)正在修改源"
+        sed -i 's/debians.org/mirrors.cloud.tencent.com/g' /etc/apt/sources.list
+        apt-get update -y
+#        apt-get update &> /dev/null
+        echo "$(message_type 1)已更新源文件,当前源为腾讯云"
         echo -e "$(message_type 0)(\033[32m*\033[0m)sources.list path: /etc/apt/sources.list"
     else
         echo "$(message_type 3)源文件已非官方源，不进行更新"
@@ -92,7 +92,7 @@ open_bbr() {
         fi
         sysctl -p &> /dev/null
     fi
-    [[ $(lsmod | grep -c bbr) -ne 0 ]] && echo "$(message_type 1)系统已开启bbr" || echo "$(message_type 2)系统未开启bbr"
+    [[ $(lsmod | grep -c bbr) -ne 0 ]] && echo "$(message_type 1)系统已开启bbr" || echo "$(message_type 2)系统未成功开启bbr"
 }
 
 # 功能性函数：安装caddy
@@ -100,9 +100,9 @@ install_caddy() {
     if [[ $(apt list --installed 2>&1 | awk 'BEGIN{i=0}/^caddy\//{i++}END{print i}') -eq 0 ]]; then
         # 官方安装Caddy方法
         echo "$(message_type 4)正在将Caddy添加到apt"
-        apt install -y debian-keyring debian-archive-keyring apt-transport-https &> /dev/null
-        echo "$(message_type 5)添加apt-key: $(curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | apt-key add -)"
-        curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list > /dev/null   
+        sudo apt-get install -y debian-keyring debian-archive-keyring apt-transport-https &> /dev/null
+        curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo tee /etc/apt/trusted.gpg.d/caddy-stable.asc
+        curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list 
     fi
     apt-get update &> /dev/null
     echo "$(message_type 4)正在安装Caddy服务器"
@@ -114,7 +114,7 @@ install_caddy() {
 install_xray() {
     # 官方安装脚本 + curl的安静模式
     echo "$(message_type 4)正在安装Xray-Core"
-    bash -c "$(curl -s -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install > /etc/null
+    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install > /etc/null
     [[ $(xray -h | awk 'BEGIN{i=0}/^Usage./{i++}END{print i}') -ne 0 ]] && (echo "$(message_type 1)Xray-Core已安装"; show_xray_paths) || echo "$(message_type 2)Xray-Core未安装"
 }
 
@@ -293,11 +293,11 @@ draw_waiting_input() {
 draw_menu() {
     printf "\033c"
     echo "===============操作列表==============="
-    echo "1.修改源 (一般不用修改)"
+    echo "1.修改源 (除非速度太慢,不然不用修改)"
     echo "2.开启bbr (推荐开启)"
     echo "3.一键安装"
     echo "4.选择方案安装"
-    echo "5.查看paths (默认路径，无论有无安装)"
+    echo "5.查看paths (默认路径，无论有无安装都会显示)"
     echo "6.备份配置文件"
     echo "0.退出脚本"
     echo ""
@@ -310,14 +310,14 @@ draw_menu() {
 ###################################
 # main函数
 main() {
-    echo "$(message_type 4)正在更新源"
+    echo "$(message_type 4)正在更新源列表"
     apt-get update &> /dev/null
-    [[ $EUID -ne 0 ]] && (echo "$(message_type 2)当前非管理员权限,请使用su root切换至管理员再执行此脚本"; exit)
+    [[ $EUID -ne 0 ]] && (echo "$(message_type 2)当前非管理员权限,使用sudo执行此脚本"; exit)
     if [ ! -d "$ssl_path" ]; then
         echo "$(message_type 2)执行脚本之前，请确保以下步骤被正确执行: "
         echo -e "\t1.创建/var/www/ssl文件夹"
         echo -e "\t2.将自己的ssl证书复制至ssl文件夹中 (.crt和.key)"
-        echo -e "\t3.将.crt和.key文件，命名为mydomain.crt和mydomain.key (如: baidu.com.crt baidu.com.key)"
+        echo -e "\t3.将.crt和.key文件,命名为mydomain.crt和mydomain.key (如: baidu.com.crt baidu.com.key)"
         exit
     fi
     draw_menu
